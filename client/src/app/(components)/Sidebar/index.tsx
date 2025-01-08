@@ -10,8 +10,16 @@ const Sidebar = () => {
             <div>Logo</div>
             <h1 className='font-extrabold text-2xl'>WartegApps</h1>
             <button className='md:hidden px-3 py-3 bg-gray-100 rounded-full hover:bg-blue-100' onClick={()=>{}}>
-            <Menu className='w-4 h-4' size={24}/>
-        </button>
+                <Menu className='w-4 h-4' size={24}/>
+            </button>
+        </div>
+        {/* LINK */}
+        <div className='flex-grow mt-8'>
+
+        </div>
+        {/* Footer */}
+        <div>
+            <p className='text-center text-xs text-gray-500'>&copy; 2025 WartegApps</p>
         </div>
     </div>
   )
