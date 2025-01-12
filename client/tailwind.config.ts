@@ -13,7 +13,7 @@ const baseColors = [
   "pink",
 ];
 
-const shadeMapping = {
+const shadeMapping: Record<string, string> = {
   "50": "900",
   "100": "800",
   "200": "700",
@@ -26,32 +26,41 @@ const shadeMapping = {
   "900": "50",
 };
 
-const generateThemeObject = (colors: any, mapping: any, invert = false) => {
-  const theme: any = {};
-  baseColors.forEach((color) => { 
+// Tentukan tipe warna berdasarkan struktur Tailwind CSS
+type ColorShades = Record<string, string>;
+type TailwindColors = Record<string, ColorShades>;
+
+const generateThemeObject = (
+  colors: TailwindColors,
+  mapping: Record<string, string>,
+  invert = false
+) => {
+  const theme: Record<string, Record<string, string>> = {};
+  baseColors.forEach((color) => {
     theme[color] = {};
-    Object.entries(mapping).forEach(([key, value]: any) => {
+    Object.entries(mapping).forEach(([key, value]) => {
       const shadeKey = invert ? value : key;
-      theme[color][key] = colors[color][shadeKey];
-    })
+      theme[color][key] = colors[color]?.[shadeKey] || "";
+    });
   });
   return theme;
-}
+};
 
-const lighTheme = generateThemeObject(colors, shadeMapping);
-const darkTheme = generateThemeObject(colors, shadeMapping, true);
+// Konversi eksplisit dengan `as unknown as TailwindColors`
+const lightTheme = generateThemeObject(colors as unknown as TailwindColors, shadeMapping);
+const darkTheme = generateThemeObject(colors as unknown as TailwindColors, shadeMapping, true);
 
 const themes = {
   light: {
-    ...lighTheme,
-    white: '#ffffff'
+    ...lightTheme,
+    white: "#ffffff",
   },
   dark: {
     ...darkTheme,
     white: colors.gray["950"],
-    black: colors.gray["50"]
-  }
-}
+    black: colors.gray["50"],
+  },
+};
 
 export default {
   darkMode: "class",
